@@ -1,0 +1,21 @@
+name = "CompleteDung"
+uuid = "d05e15d5-4004-5ae9-b4bd-851297a6440e"
+authors = ["yakir12 <12.yakir@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
+Combinatorics = "861a8166-3701-5b0c-9a16-15d98fcdc6aa"
+DataDeps = "124859b0-ceae-595e-8997-d05f6a7a8dfe"
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+JuliaDB = "a93385a2-3734-596a-9a66-3cfbb77141e6"
+REPL = "3fa0cd96-eef1-5676-8a61-b3b8758bbffb"
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+UUIDs = "cf7118a7-6976-5b1a-9a39-7adc72f591a4"
+VideoIO = "d6d074c3-1acf-5d4c-9a43-ef38773959a2"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
