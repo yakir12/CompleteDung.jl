@@ -57,7 +57,7 @@ end
 
 function registervideos!(files)
     sunregistered = getorder(files)
-    durations = [Microsecond(Dates.value(VideoIO.get_duration(joinpath(coffeesource, file_name)))) for file_name in sunregistered]
+    durations = [VideoIO.get_duration(joinpath(coffeesource, file_name)) for file_name in sunregistered]
     videoID = uuid4(MersenneTwister(hash(join(sunregistered))))
     nfiles = length(files)
     if nfiles == 1
