@@ -1,6 +1,6 @@
 function __init__()
     ENV["DATADEPS_ALWAYS_ACCEPT"] = true
-    register(DataDep("coffeebeetle", "The coffee beetle database", "https://s3.eu-central-1.amazonaws.com/vision-group-file-sharing/Data%20backup%20and%20storage/Yakir/coffee%20beetles/database.zip", "1d82fbbebad76c3c3a0735e9d181cc208119b136903bb73e085c6683a3d1ff2f", post_fetch_method = unpack))
+    register(DataDep("coffeebeetle", "The coffee beetle database", "https://s3.eu-central-1.amazonaws.com/vision-group-file-sharing/Data%20backup%20and%20storage/Yakir/coffee%20beetles/database.zip", "e080a1733eef41ad8e08f4d111b6d52c5172dc0214709cd280cae5f6ba205090", post_fetch_method = unpack))
 
     if !isdir(sourcefolder)
         @info "creating the source folder" coffeesource
