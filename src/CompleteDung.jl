@@ -105,9 +105,11 @@ function getboard()
 end
 
 function getcalibration()
-    files = [joinpath(datadep"coffeebeetle", "calibration.csv"), calibration_file_name]
-    calibration = loadtable(files, indexcols = (:calibration), filenamecol = :source => oldornew)
+    calibration = loadtable(calibration_file_name, indexcols = (:calibration))
     setcol(calibration, :calibration => :calibration => UUID, :extrinsic => :extrinsic => x -> ismissing(x) || isempty(x) ? missing : UUID(x), :intrinsic => :intrinsic => x -> ismissing(x) || isempty(x) ? missing : UUID(x))
+    # files = [joinpath(datadep"coffeebeetle", "calibration.csv"), calibration_file_name]
+    # calibration = loadtable(files, indexcols = (:calibration), filenamecol = :source => oldornew)
+    # setcol(calibration, :calibration => :calibration => UUID, :extrinsic => :extrinsic => x -> ismissing(x) || isempty(x) ? missing : UUID(x), :intrinsic => :intrinsic => x -> ismissing(x) || isempty(x) ? missing : UUID(x))
 end
 
 function register_calibration()
@@ -140,10 +142,10 @@ function register_calibration()
     comment = defaults[:calibration_comment]
 
     calibrationID = uuid4()
-    calibration = getcalibration()
-    while calibrationID ∈ select(calibration, :calibration)
-        calibrationID = uuid4()
-    end
+    # calibration = getcalibration()
+    # while calibrationID ∈ select(calibration, :calibration)
+        # calibrationID = uuid4()
+    # end
 
     [(calibration = calibrationID, intrinsic = intrinsic, extrinsic = extrinsic, board = boardID, comment = comment)] |> CSV.write(calibration_file_name, append = true)
     # addrow((calibration = calibrationID, intrinsic = intrinsic, extrinsic = extrinsic, board = boardID, comment = comment), calibration_file_name)
@@ -181,8 +183,19 @@ function register_poi(; person = nothing)
     y = groupby(x, :calibration, usekey = true) do k, r
         (calibration = k.calibration, file_name = r[1].file_name, start = r[1].start)
     end
-    calibrationID = calibration[end].calibration
-    i = findfirst(isequal(calibrationID), select(y, :calibration))
+
+    i = if length(y) > 1
+        options = _formatrow(y)
+        menu = RadioMenu(options)
+        request("Which calibration will the POIs be calibrated by?", menu)
+    else
+        1
+    end
+    calibrationID = y[i].calibration
+
+
+    # calibrationID = calibration[end].calibration
+    # i = findfirst(isequal(calibrationID), select(y, :calibration))
     println("Registration of the calibration found in ", y[i].file_name, " at ", Time(0) + y[i].start)
 
     experiment = loadtable(joinpath(datadep"coffeebeetle", "experiment.csv"), indexcols = (:experiment))
