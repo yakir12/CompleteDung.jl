@@ -172,6 +172,8 @@ function getpoi()
     setcol(poi, :poi => :poi => UUID, :run => :run => UUID, :calibration => :calibration => x -> isempty(x) ? missing : UUID(x), :interval => :interval => UUID)
 end
 
+const corners = ["rightdowninitial", "leftdowninitial", "rightupinitial", "leftupinitial", "rightdownfinal", "leftdownfinal", "rightupfinal", "leftupfinal"]
+
 function register_poi(; person = nothing)
 
     video, videofile = getvideodb()
@@ -226,6 +228,13 @@ function register_poi(; person = nothing)
     groupby(data, :experiment, usekey = true) do experimentID, es
         println("In experiment: ", experimentID)
         groupby(table(es), :run, usekey = true) do runID, rs
+            y = [findfirst(isequal(corners[i]), rs.type) for i in 1:length(a)]
+            rs = if any(isnothing, y)
+                rs
+            else
+                append!(y, setdiff(1:length(rs), y))
+                rs[y]
+            end
             println("In run ID: ", rs[1].id, "; date: ", rs[1].date)
             for r in rs
                 println("Is the ", r.type, " POI calibrated by the last calibration?\n[Enter: yes, other: no]")
