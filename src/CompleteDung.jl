@@ -228,7 +228,7 @@ function register_poi(; person = nothing)
     groupby(data, :experiment, usekey = true) do experimentID, es
         println("In experiment: ", experimentID)
         groupby(table(es), :run, usekey = true) do runID, rs
-            y = [findfirst(isequal(corners[i]), rs.type) for i in 1:length(a)]
+            y = [findfirst(isequal(corners[i]), rs.type) for i in 1:length(rs)]
             rs = if any(isnothing, y)
                 rs
             else
